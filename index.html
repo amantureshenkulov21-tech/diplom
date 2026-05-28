@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITLIFE | Премиум Фитнес жана Wellness Борбору</title>
+    
+    <!-- Ариптер жана Белгилер -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           ГЛОБАЛДЫК СТИЛДЕР ЖАНА ТЕМУ КҮЙГҮЗҮҮ
+           ========================================== */
+        :root {
+            --primary: #D4AF37; 
+            --primary-hover: #F3E5AB;
+            --bg-dark: #0A0A0A;
+            --bg-card: #141414;
+            --text-main: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --nav-bg: rgba(0, 0, 0, 0.9);
+            --input-bg: #1A1A1A;
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Светлая тема үчүн өзгөрмөлөр (Дизайнды өзгөртпөйт, түстөрдү гана алмаштырат) */
+        [data-theme="light"] {
+            --bg-dark: #FAFAFA;
+            --bg-card: #FFFFFF;
+            --text-main: #111111;
+            --text-muted: #666666;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --input-bg: #EEEEEE;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Авто-масштаб негизи */
+        html {
+            font-size: 16px;
+        }
+        @media (max-width: 1200px) { html { font-size: 15px; } }
+        @media (max-width: 768px) { html { font-size: 14px; } }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        span {
+            color: var(--primary);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* ==========================================
+           НАВИГАЦИЯ (ШАПКА)
+           ========================================== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 8%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(214, 175, 55, 0.1);
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-size: 1.625rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links li a {
+            color: var(--text-main);
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links li a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links li a:hover {
+            color: var(--primary);
+        }
+
+        .btn-nav {
+            background: transparent;
+            color: var(--text-main);
+            padding: 12px 28px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.813rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .btn-nav:hover {
+            background: var(--primary);
+            color: #000 !important;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Бургер Меню Баскычы */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background: var(--text-main);
+            transition: var(--transition);
+        }
+
+        /* ==========================================
+           БАШКЫ БЕТ (HERO SECTION)
+           ========================================== */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), var(--bg-dark)), 
+                        url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1920') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .btn-main {
+            display: inline-block;
+            padding: 18px 40px;
+            background: var(--primary);
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition);
+        }
+
+        .btn-main:hover {
+            background: transparent;
+            color: var(--primary);
+            box-shadow: inset 0 0 0 2px var(--primary);
+        }
+
+        /* ==========================================
+           СЕКЦИЯЛАРДЫН ЖАЛПЫ СТИЛИ
+           ========================================== */
+        .services, .coaches, .schedule, .contact {
+            padding: 120px 8%;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.625rem;
+            font-weight: 900;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            margin: 15px auto 0 auto;
+        }
+
+        /* ==========================================
+           БӨЛҮМДӨР (SERVICES)
+           ========================================== */
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            padding: 50px 35px;
+            transition: var(--transition);
+            border: 1px solid rgba(214,175,55,0.05);
+            cursor: pointer;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .service-card h3 {
+            font-size: 1.375rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.938rem;
+            line-height: 1.6;
+        }
+        
+        .more-info-text {
+            font-size: 0.75rem;
+            color: var(--primary);
+            margin-top: 25px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ==========================================
+           МОДАЛДЫК ТЕРЕЗЕ
+           ========================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            padding: 50px;
+            max-width: 550px;
+            width: 90%;
+            position: relative;
+            border: 1px solid var(--primary);
+            transform: translateY(40px);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 1.75rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-content h3 {
+            font-size: 1.75rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .modal-details li {
+            list-style: none;
+            margin: 15px 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .modal-details i {
+            color: var(--primary);
+            margin-right: 15px;
+        }
+
+        /* ==========================================
+           МАШЫКТЫРУУЧУЛАР (COACHES)
+           ========================================== */
+        .coaches-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .coach-card {
+            background: var(--bg-card);
+            width: 340px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(214,175,55,0.05);
+        }
+
+        .coach-img {
+            height: 420px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .bg-coach1 { background-image: url('https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=500'); }
+        .bg-coach2 { background-image: url('https://images.unsplash.com/photo-1548690312-e3b507d8c110?q=80&w=500'); }
+
+        .coach-card:hover .coach-img {
+            transform: scale(1.06);
+        }
+
+        .coach-info {
+            padding: 30px 20px;
+            background: var(--bg-card);
+        }
+
+        .coach-info h3 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .coach-info p {
+            color: var(--primary);
+            font-size: 0.813rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        /* ==========================================
+           РАСПИСАНИЕ (SCHEDULE)
+           ========================================== */
+        .tab-btn {
+            padding: 14px 30px;
+            margin: 5px;
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(214,175,55,0.2);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.813rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+        
+        .tab-btn.active, .tab-btn:hover { 
+            background: var(--primary); 
+            color: #000;
+            border-color: var(--primary);
+        }
+
+        .schedule-grid { 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        
+        .schedule-item {
+            background: var(--bg-card);
+            padding: 25px 30px;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .schedule-time {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.125rem;
+        }
+
+        /* ==========================================
+           БАЙЛАНЫШ ФОРМАСЫ (CONTACT)
+           ========================================== */
+        .contact-box {
+            background: var(--bg-card);
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 60px 50px;
+            border: 1px solid rgba(214,175,55,0.05);
+        }
+
+        .contact-box h2 {
+            font-size: 1.875rem;
+            font-weight: 900;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+        }
+
+        .contact-box input, .contact-box select {
+            width: 100%;
+            padding: 16px;
+            margin: 15px 0;
+            background: var(--input-bg);
+            border: 1px solid rgba(214,175,55,0.1);
+            color: var(--text-main);
+            font-size: 0.938rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .contact-box input:focus, .contact-box select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+        }
+
+        /* ==========================================
+           ФИШКА: ТЕМУ КҮЙГҮЗҮҮЧҮ КАЛКЫМА БАСКЫЧ
+           ========================================== */
+        .theme-switcher {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: var(--primary);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .theme-switcher:hover {
+            transform: scale(1.1) rotate(360deg);
+        }
+
+        /* ==========================================
+           МОБИЛДИК АДАПТИВДҮҮЛҮК (RESPONSIVE)
+           ========================================== */
+        @media (max-width: 992px) {
+            .navbar { padding: 20px 5%; }
+            
+            .menu-toggle { display: flex; }
+            
+            .nav-links {
+                position: fixed;
+                top: 78px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 78px);
+                background: var(--nav-bg);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                justify-content: center;
+                gap: 30px;
+                transition: var(--transition);
+            }
+
+            .nav-links.active { left: 0; }
+            
+            .hero-content h1 { font-size: 3rem; }
+            .section-title { font-size: 2rem; }
+            .schedule-item { flex-direction: column; gap: 10px; text-align: center; }
+            .contact-box { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Навигация -->
+    <nav class="navbar">
+        <div class="logo">FIT<span>LIFE</span></div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links" id="nav-menu">
+            <li><a href="#home">Башкы</a></li>
+            <li><a href="#services">Кызматтар</a></li>
+            <li><a href="#coaches">Устаттар</a></li>
+            <li><a href="#schedule">Расписание</a></li>
+            <li><a href="#contact">Байланыш</a></li>
+        </ul>
+        <a href="#contact" class="btn-nav">Катталуу</a>
+    </nav>
+
+    <!-- Башкы бет (Hero) -->
+    <section id="home" class="hero">
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1200">
+            <h1>ӨЗ ДЕНЕҢДИ <br><span>ӨЗҮҢ ЖАРАТ!</span></h1>
+            <p>Элиталык тренажерлор, эксперттик деңгээлдеги машыктыруучулар жана сиз үчүн гана түзүлгөн премиум шарттар.</p>
+            <a href="#services" class="btn-main">Кененирээк билүү</a>
+        </div>
+    </section>
+
+    <!-- Бөлүмдөр (Services) -->
+    <section id="services" class="services">
+        <h2 class="section-title" data-aos="fade-down">Биздин <span>Бөлүмдөр</span></h2>
+        <div class="services-container">
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100" onclick="openModal('gym')">
+                <i class="fas fa-dumbbell icon"></i>
+                <h3>Тренажер Залы</h3>
+                <p>Күчтүү булчуңдар жана чыдамкайлык үчүн дүйнөлүк бренддердин профессионалдык жабдыктары.</p>
+                <p class="more-info-text">Толук маалымат <i class="fas fa-arrow-right"></i></p>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200" onclick="openModal('yoga')">
+                <i class="fas fa-spa icon"></i>
+                <h3>Йога & Пилатес</h3>
+                <p>Ички гармония, дененин максималдуу ийкемдүүлүгү жана стресстен толук арылуу мейкиндиги.</p>
+                <p class="more-info-text">Толук маалымат <i class="fas fa-arrow-right"></i></p>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="300" onclick="openModal('crossfit')">
+                <i class="fas fa-heartbeat icon"></i>
+                <h3>Кроссфит (Cardio)</h3>
+                <p>Жогорку интенсивдүүлүктөгү автордук машыгуулар - майларды тез жана натыйжалуу эритүү.</p>
+                <p class="more-info-text">Толук маалымат <i class="fas fa-arrow-right"></i></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Модалдык Терезе -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Бөлүмдүн аты</h3>
+            <div class="modal-details" id="modalDetails"></div>
+            <a href="#contact" class="btn-submit" style="text-decoration: none; display: block; text-align: center;" onclick="closeModal()">Азыр жазылуу</a>
+        </div>
+    </div>
+
+    <!-- Машыктыруучулар -->
+    <section id="coaches" class="coaches">
+        <h2 class="section-title" data-aos="fade-down">Профессионал <span>Устаттар</span></h2>
+        <div class="coaches-container">
+            <div class="coach-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="coach-img bg-coach1" loading="lazy"></div>
+                <div class="coach-info">
+                    <h3>Алибек Султанов</h3>
+                    <p>Бодибилдинг боюнча спорт чебери</p>
+                </div>
+            </div>
+            <div class="coach-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="coach-img bg-coach2" loading="lazy"></div>
+                <div class="coach-info">
+                    <h3>Айсулуу Асанова</h3>
+                    <p>Йога устаты жана фитнес-диетолог</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Расписание -->
+    <section id="schedule" class="schedule" data-aos="fade-up">
+        <h2 class="section-title">Машыгуулардын <span>Расписаниеси</span></h2>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="filterDay('all', event)">Бардыгы</button>
+            <button class="tab-btn" onclick="filterDay('mon', event)">Дүйшөмбү</button>
+            <button class="tab-btn" onclick="filterDay('wed', event)">Шаршемби</button>
+            <button class="tab-btn" onclick="filterDay('fri', event)">Жума</button>
+        </div>
+        <div class="schedule-grid">
+            <div class="schedule-item mon">
+                <span class="schedule-time">08:00 - 10:00</span>
+                <span class="schedule-desc">Кроссфит — Алибек</span>
+            </div>
+            <div class="schedule-item wed">
+                <span class="schedule-time">10:00 - 11:30</span>
+                <span class="schedule-desc">Йога — Айсулуу</span>
+            </div>
+            <div class="schedule-item fri">
+                <span class="schedule-time">15:00 - 17:00</span>
+                <span class="schedule-desc">Пауэрлифтинг — Алибек</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Байланыш -->
+    <section id="contact" class="contact">
+        <div class="contact-box" data-aos="zoom-in">
+            <h2>Акысыз машыгууга <span>жазылыңыз</span></h2>
+            <form id="fitness-form">
+                <input type="text" id="form-name" placeholder="Атыңыз" required>
+                <input type="tel" id="form-phone" placeholder="Телефон номериңиз (жөн гана сандар)" required>
+                <select id="formSelect">
+                    <option>Тренажер залы</option>
+                    <option>Йога & Пилатес</option>
+                    <option>Кроссфит</option>
+                </select>
+                <button type="submit" class="btn-submit">Премиум конок болуу</button>
+            </form>
+            <div id="form-message"></div>
+        </div>
+    </section>
+
+    <!-- Фишка: Жарык/Кара тема алмаштыргыч баскыч -->
+    <div class="theme-switcher" id="themeBtn" title="Теманы алмаштыруу">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- Скрипттер -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        // МОБИЛДИК МЕНЮ ЛОГИКАСЫ
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+
+        mobileMenu.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // СВЕТЛАЯ / ТЕМНАЯ ТЕМА ЛОГИКАСЫ (Фишка)
+        const themeBtn = document.getElementById('themeBtn');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+
+        if (currentTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        themeBtn.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+
+        // МОДАЛДЫК ТЕРЕЗЕ МААЛЫМАТТАРЫ
+        const modalData = {
+            gym: {
+                title: "Тренажер Залы",
+                details: `
+                    <li><i class="fas fa-star"></i> <b>Баасы:</b> 2500 сом / айына</li>
+                    <li><i class="fas fa-clock"></i> <b>Убактысы:</b> 07:00 - 23:00</li>
+                    <li><i class="fas fa-check"></i> <b>Камтылган:</b> Душ, Фин саунасы, Инструктаж, Сүлгү</li>
+                `,
+                selectIndex: 0
+            },
+            yoga: {
+                title: "Йога & Пилатес",
+                details: `
+                    <li><i class="fas fa-star"></i> <b>Баасы:</b> 2200 сом / айына</li>
+                    <li><i class="fas fa-clock"></i> <b>Убактысы:</b> Шаршемби, Жума - 10:00</li>
+                    <li><i class="fas fa-check"></i> <b>Камтылган:</b> Йога килемчелери, фитболдор, дем алуу терапиясы</li>
+                `,
+                selectIndex: 1
+            },
+            crossfit: {
+                title: "Кроссфит (Cardio)",
+                details: `
+                    <li><i class="fas fa-star"></i> <b>Баасы:</b> 3000 сом / айына</li>
+                    <li><i class="fas fa-clock"></i> <b>Убактысы:</b> Дүйшөмбү, Жума - 08:00</li>
+                    <li><i class="fas fa-check"></i> <b>Программа:</b> Май эритүүчү интенсив, Жүрөк-кан тамыр системасын чыңдоо</li>
+                `,
+                selectIndex: 2
+            }
+        };
+
+        function openModal(type) {
+            const modal = document.getElementById('modalOverlay');
+            document.getElementById('modalTitle').innerText = modalData[type].title;
+            document.getElementById('modalDetails').innerHTML = modalData[type].details;
+            document.getElementById('formSelect').selectedIndex = modalData[type].selectIndex;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // РАСПИСАНИЕ ФИЛЬТРИ
+        function filterDay(day, e) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if(e && e.target) e.target.classList.add('active');
+
+            const items = document.querySelectorAll('.schedule-item');
+            items.forEach(item => {
+                if (day === 'all' || item.classList.contains(day)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // ВАЛИДАЦИЯ ЖАНА ФОРМАНЫ ЖӨНӨТҮҮ
+        document.getElementById('fitness-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('form-name').value.trim();
+            const phone = document.getElementById('form-phone').value.trim();
+            const msgBox = document.getElementById('form-message');
+
+            if(name.length < 2) {
+                msgBox.innerHTML = "<p style='color: red; margin-top: 15px;'>Сураныч, туура атыңызды жазыңыз.</p>";
+                return;
+            }
+
+            // Номерди текшерүү фишкасы
+            if(isNaN(phone) || phone.length < 9) {
+                msgBox.innerHTML = "<p style='color: red; margin-top: 15px;'>Сураныч, туура телефон номерин жазыңыз.</p>";
+                return;
+            }
+
+            msgBox.innerHTML = "<p style='color: #D4AF37; margin-top: 25px; font-weight: bold; letter-spacing: 1px;'>ИЙГИЛИКТҮҮ КАТТАЛДЫҢЫЗ! Менеджер жакында байланышат.</p>";
+            this.reset();
+        });
+    </script>
+</body>
+</html>
