@@ -3,866 +3,857 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FITLIFE | Премиум Фитнес жана Wellness Борбору</title>
-    
-    <!-- Ариптер жана Белгилер -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+    <title>Сапардаш — Шаараралык Попутка жана Такси</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Rubik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Leaflet Картасынын куралдары -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        /* ==========================================
-           ГЛОБАЛДЫК СТИЛДЕР ЖАНА ТЕМУ КҮЙГҮЗҮҮ
-           ========================================== */
-        :root {
-            --primary: #D4AF37; 
-            --primary-hover: #F3E5AB;
-            --bg-dark: #0A0A0A;
-            --bg-card: #141414;
-            --text-main: #FFFFFF;
-            --text-muted: #A0A0A0;
-            --nav-bg: rgba(0, 0, 0, 0.9);
-            --input-bg: #1A1A1A;
-            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* Светлая тема үчүн өзгөрмөлөр (Дизайнды өзгөртпөйт, түстөрдү гана алмаштырат) */
-        [data-theme="light"] {
-            --bg-dark: #FAFAFA;
-            --bg-card: #FFFFFF;
-            --text-main: #111111;
-            --text-muted: #666666;
-            --nav-bg: rgba(255, 255, 255, 0.95);
-            --input-bg: #EEEEEE;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        /* Авто-масштаб негизи */
-        html {
-            font-size: 16px;
-        }
-        @media (max-width: 1200px) { html { font-size: 15px; } }
-        @media (max-width: 768px) { html { font-size: 14px; } }
-
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden;
-            letter-spacing: 0.5px;
-            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Rubik', sans-serif;
         }
-
-        span {
-            color: var(--primary);
+        #map { 
+            height: 380px; 
+            width: 100%; 
+            border-radius: 16px; 
+            z-index: 1; 
+            border: 2px solid #e2e8f0;
         }
-
+        /* Скроллду сулуу көрсөтүү */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
+            background: #f1f5f9;
         }
         ::-webkit-scrollbar-thumb {
-            background: #333;
+            background: #cbd5e1;
             border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
-
-        /* ==========================================
-           НАВИГАЦИЯ (ШАПКА)
-           ========================================== */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 8%;
-            background: var(--nav-bg);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(214, 175, 55, 0.1);
-            transition: var(--transition);
-        }
-
-        .logo {
-            font-size: 1.625rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links li a {
-            color: var(--text-main);
-            text-decoration: none;
-            margin: 0 20px;
-            font-weight: 600;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-links li a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            transition: var(--transition);
-        }
-
-        .nav-links li a:hover::after {
-            width: 100%;
-        }
-
-        .nav-links li a:hover {
-            color: var(--primary);
-        }
-
-        .btn-nav {
-            background: transparent;
-            color: var(--text-main);
-            padding: 12px 28px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.813rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: 1px solid var(--primary);
-            transition: var(--transition);
-        }
-
-        .btn-nav:hover {
-            background: var(--primary);
-            color: #000 !important;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-        }
-
-        /* Бургер Меню Баскычы */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .menu-toggle span {
-            display: block;
-            width: 30px;
-            height: 3px;
-            background: var(--text-main);
-            transition: var(--transition);
-        }
-
-        /* ==========================================
-           БАШКЫ БЕТ (HERO SECTION)
-           ========================================== */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.4), var(--bg-dark)), 
-                        url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1920') no-repeat center center/cover;
-            display: flex;
-            align-items: center;
-            padding: 0 8%;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 800px;
-        }
-
-        .hero-content h1 {
-            font-size: 4.5rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 25px;
-            letter-spacing: 2px;
-        }
-
-        .hero-content p {
-            font-size: 1.25rem;
-            font-weight: 300;
-            margin-bottom: 40px;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .btn-main {
-            display: inline-block;
-            padding: 18px 40px;
-            background: var(--primary);
-            color: #000;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: var(--transition);
-        }
-
-        .btn-main:hover {
-            background: transparent;
-            color: var(--primary);
-            box-shadow: inset 0 0 0 2px var(--primary);
-        }
-
-        /* ==========================================
-           СЕКЦИЯЛАРДЫН ЖАЛПЫ СТИЛИ
-           ========================================== */
-        .services, .coaches, .schedule, .contact {
-            padding: 120px 8%;
-            text-align: center;
-        }
-
-        .section-title {
-            font-size: 2.625rem;
-            font-weight: 900;
-            margin-bottom: 60px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: var(--primary);
-            margin: 15px auto 0 auto;
-        }
-
-        /* ==========================================
-           БӨЛҮМДӨР (SERVICES)
-           ========================================== */
-        .services-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-            gap: 30px;
-        }
-
-        .service-card {
-            background: var(--bg-card);
-            padding: 50px 35px;
-            transition: var(--transition);
-            border: 1px solid rgba(214,175,55,0.05);
-            cursor: pointer;
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: var(--transition);
-        }
-
-        .service-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-
-        .icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 30px;
-        }
-
-        .service-card h3 {
-            font-size: 1.375rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .service-card p {
-            color: var(--text-muted);
-            font-size: 0.938rem;
-            line-height: 1.6;
-        }
-        
-        .more-info-text {
-            font-size: 0.75rem;
-            color: var(--primary);
-            margin-top: 25px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* ==========================================
-           МОДАЛДЫК ТЕРЕЗЕ
-           ========================================== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: var(--transition);
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            padding: 50px;
-            max-width: 550px;
-            width: 90%;
-            position: relative;
-            border: 1px solid var(--primary);
-            transform: translateY(40px);
-            transition: var(--transition);
-            text-align: left;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            font-size: 1.75rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .modal-close:hover {
-            color: var(--primary);
-        }
-
-        .modal-content h3 {
-            font-size: 1.75rem;
-            margin-bottom: 25px;
-            color: var(--primary);
-            text-transform: uppercase;
-            font-weight: 900;
-        }
-
-        .modal-details li {
-            list-style: none;
-            margin: 15px 0;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .modal-details i {
-            color: var(--primary);
-            margin-right: 15px;
-        }
-
-        /* ==========================================
-           МАШЫКТЫРУУЧУЛАР (COACHES)
-           ========================================== */
-        .coaches-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .coach-card {
-            background: var(--bg-card);
-            width: 340px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(214,175,55,0.05);
-        }
-
-        .coach-img {
-            height: 420px;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .bg-coach1 { background-image: url('https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=500'); }
-        .bg-coach2 { background-image: url('https://images.unsplash.com/photo-1548690312-e3b507d8c110?q=80&w=500'); }
-
-        .coach-card:hover .coach-img {
-            transform: scale(1.06);
-        }
-
-        .coach-info {
-            padding: 30px 20px;
-            background: var(--bg-card);
-        }
-
-        .coach-info h3 {
-            font-size: 1.375rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .coach-info p {
-            color: var(--primary);
-            font-size: 0.813rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-        }
-
-        /* ==========================================
-           РАСПИСАНИЕ (SCHEDULE)
-           ========================================== */
-        .tab-btn {
-            padding: 14px 30px;
-            margin: 5px;
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid rgba(214,175,55,0.2);
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.813rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
-        }
-        
-        .tab-btn.active, .tab-btn:hover { 
-            background: var(--primary); 
-            color: #000;
-            border-color: var(--primary);
-        }
-
-        .schedule-grid { 
-            max-width: 800px; 
-            margin: 0 auto; 
-        }
-        
-        .schedule-item {
-            background: var(--bg-card);
-            padding: 25px 30px;
-            margin: 15px 0;
-            border-left: 4px solid var(--primary);
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .schedule-time {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.125rem;
-        }
-
-        /* ==========================================
-           БАЙЛАНЫШ ФОРМАСЫ (CONTACT)
-           ========================================== */
-        .contact-box {
-            background: var(--bg-card);
-            max-width: 550px;
-            margin: 0 auto;
-            padding: 60px 50px;
-            border: 1px solid rgba(214,175,55,0.05);
-        }
-
-        .contact-box h2 {
-            font-size: 1.875rem;
-            font-weight: 900;
-            margin-bottom: 35px;
-            text-transform: uppercase;
-        }
-
-        .contact-box input, .contact-box select {
-            width: 100%;
-            padding: 16px;
-            margin: 15px 0;
-            background: var(--input-bg);
-            border: 1px solid rgba(214,175,55,0.1);
-            color: var(--text-main);
-            font-size: 0.938rem;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .contact-box input:focus, .contact-box select:focus {
-            border-color: var(--primary);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 18px;
-            background: var(--primary);
-            color: #000;
-            border: none;
-            font-weight: 700;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: var(--transition);
-        }
-
-        .btn-submit:hover {
-            background: var(--primary-hover);
-        }
-
-        /* ==========================================
-           ФИШКА: ТЕМУ КҮЙГҮЗҮҮЧҮ КАЛКЫМА БАСКЫЧ
-           ========================================== */
-        .theme-switcher {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 55px;
-            height: 55px;
-            background: var(--primary);
-            color: #000;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            z-index: 999;
-            transition: var(--transition);
-        }
-
-        .theme-switcher:hover {
-            transform: scale(1.1) rotate(360deg);
-        }
-
-        /* ==========================================
-           МОБИЛДИК АДАПТИВДҮҮЛҮК (RESPONSIVE)
-           ========================================== */
-        @media (max-width: 992px) {
-            .navbar { padding: 20px 5%; }
-            
-            .menu-toggle { display: flex; }
-            
-            .nav-links {
-                position: fixed;
-                top: 78px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 78px);
-                background: var(--nav-bg);
-                backdrop-filter: blur(15px);
-                flex-direction: column;
-                justify-content: center;
-                gap: 30px;
-                transition: var(--transition);
-            }
-
-            .nav-links.active { left: 0; }
-            
-            .hero-content h1 { font-size: 3rem; }
-            .section-title { font-size: 2rem; }
-            .schedule-item { flex-direction: column; gap: 10px; text-align: center; }
-            .contact-box { padding: 40px 20px; }
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800">
 
-    <!-- Навигация -->
-    <nav class="navbar">
-        <div class="logo">FIT<span>LIFE</span></div>
-        <div class="menu-toggle" id="mobile-menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <ul class="nav-links" id="nav-menu">
-            <li><a href="#home">Башкы</a></li>
-            <li><a href="#services">Кызматтар</a></li>
-            <li><a href="#coaches">Устаттар</a></li>
-            <li><a href="#schedule">Расписание</a></li>
-            <li><a href="#contact">Байланыш</a></li>
-        </ul>
-        <a href="#contact" class="btn-nav">Катталуу</a>
-    </nav>
-
-    <!-- Башкы бет (Hero) -->
-    <section id="home" class="hero">
-        <div class="hero-content" data-aos="fade-up" data-aos-duration="1200">
-            <h1>ӨЗ ДЕНЕҢДИ <br><span>ӨЗҮҢ ЖАРАТ!</span></h1>
-            <p>Элиталык тренажерлор, эксперттик деңгээлдеги машыктыруучулар жана сиз үчүн гана түзүлгөн премиум шарттар.</p>
-            <a href="#services" class="btn-main">Кененирээк билүү</a>
-        </div>
-    </section>
-
-    <!-- Бөлүмдөр (Services) -->
-    <section id="services" class="services">
-        <h2 class="section-title" data-aos="fade-down">Биздин <span>Бөлүмдөр</span></h2>
-        <div class="services-container">
-            <div class="service-card" data-aos="fade-up" data-aos-delay="100" onclick="openModal('gym')">
-                <i class="fas fa-dumbbell icon"></i>
-                <h3>Тренажер Залы</h3>
-                <p>Күчтүү булчуңдар жана чыдамкайлык үчүн дүйнөлүк бренддердин профессионалдык жабдыктары.</p>
-                <p class="more-info-text">Толук маалымат <i class="fas fa-arrow-right"></i></p>
-            </div>
-            <div class="service-card" data-aos="fade-up" data-aos-delay="200" onclick="openModal('yoga')">
-                <i class="fas fa-spa icon"></i>
-                <h3>Йога & Пилатес</h3>
-                <p>Ички гармония, дененин максималдуу ийкемдүүлүгү жана стресстен толук арылуу мейкиндиги.</p>
-                <p class="more-info-text">Толук маалымат <i class="fas fa-arrow-right"></i></p>
-            </div>
-            <div class="service-card" data-aos="fade-up" data-aos-delay="300" onclick="openModal('crossfit')">
-                <i class="fas fa-heartbeat icon"></i>
-                <h3>Кроссфит (Cardio)</h3>
-                <p>Жогорку интенсивдүүлүктөгү автордук машыгуулар - майларды тез жана натыйжалуу эритүү.</p>
-                <p class="more-info-text">Толук маалымат <i class="fas fa-arrow-right"></i></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Модалдык Терезе -->
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <h3 id="modalTitle">Бөлүмдүн аты</h3>
-            <div class="modal-details" id="modalDetails"></div>
-            <a href="#contact" class="btn-submit" style="text-decoration: none; display: block; text-align: center;" onclick="closeModal()">Азыр жазылуу</a>
-        </div>
-    </div>
-
-    <!-- Машыктыруучулар -->
-    <section id="coaches" class="coaches">
-        <h2 class="section-title" data-aos="fade-down">Профессионал <span>Устаттар</span></h2>
-        <div class="coaches-container">
-            <div class="coach-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="coach-img bg-coach1" loading="lazy"></div>
-                <div class="coach-info">
-                    <h3>Алибек Султанов</h3>
-                    <p>Бодибилдинг боюнча спорт чебери</p>
+    <!-- НАВИГАЦИЯ (HEADER) -->
+    <header class="bg-blue-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🚗</span>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-wide">Сапардаш</h1>
+                    <p class="text-xs text-blue-200">Ишенимдүү шаараралык жолдош</p>
                 </div>
             </div>
-            <div class="coach-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="coach-img bg-coach2" loading="lazy"></div>
-                <div class="coach-info">
-                    <h3>Айсулуу Асанова</h3>
-                    <p>Йога устаты жана фитнес-диетолог</p>
+            
+            <div class="flex items-center flex-wrap gap-3">
+                <!-- Пассажир / Айдоочу бөлүмдөрүнүн баскычтары -->
+                <div class="flex bg-blue-700 p-1 rounded-xl">
+                    <button id="btn-passenger-tab" onclick="switchTab('passenger')" class="px-4 py-2 rounded-lg text-sm font-semibold bg-white text-blue-600 shadow transition-all">
+                        👨‍✈️ Жүргүнчүлөр
+                    </button>
+                    <button id="btn-driver-tab" onclick="switchTab('driver')" class="px-4 py-2 rounded-lg text-sm font-semibold text-white hover:bg-blue-600 transition-all">
+                        🚖 Айдоочулар
+                    </button>
+                </div>
+
+                <!-- Колдонуучунун профили жана Кирүү баскычы -->
+                <div id="auth-status" class="flex items-center gap-2 bg-blue-800 px-4 py-2 rounded-xl text-sm">
+                    <!-- Бул жерге JS аркылуу кирүү абалы же колдонуучунун аты жазылат -->
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
-    <!-- Расписание -->
-    <section id="schedule" class="schedule" data-aos="fade-up">
-        <h2 class="section-title">Машыгуулардын <span>Расписаниеси</span></h2>
-        <div class="tabs">
-            <button class="tab-btn active" onclick="filterDay('all', event)">Бардыгы</button>
-            <button class="tab-btn" onclick="filterDay('mon', event)">Дүйшөмбү</button>
-            <button class="tab-btn" onclick="filterDay('wed', event)">Шаршемби</button>
-            <button class="tab-btn" onclick="filterDay('fri', event)">Жума</button>
-        </div>
-        <div class="schedule-grid">
-            <div class="schedule-item mon">
-                <span class="schedule-time">08:00 - 10:00</span>
-                <span class="schedule-desc">Кроссфит — Алибек</span>
-            </div>
-            <div class="schedule-item wed">
-                <span class="schedule-time">10:00 - 11:30</span>
-                <span class="schedule-desc">Йога — Айсулуу</span>
-            </div>
-            <div class="schedule-item fri">
-                <span class="schedule-time">15:00 - 17:00</span>
-                <span class="schedule-desc">Пауэрлифтинг — Алибек</span>
-            </div>
-        </div>
-    </section>
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- ================= ЖҮРГҮНЧҮЛӨР БӨЛҮМҮ (ПАССАЖИР ТАБ) ================= -->
+        <section id="passenger-section" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Сол тилке: Фильтр жана Издөө, Карта -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h2 class="text-lg font-bold mb-4 text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass text-blue-500"></i> Сапар издөө
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Каттам түрү</label>
+                            <select id="filter-type" onchange="renderAds()" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-slate-50">
+                                <option value="all">Баардык таксилер</option>
+                                <option value="professional">⭐ Профессионал такси</option>
+                                <option value="casual">🚗 Жөнөкөй Попутка</option>
+                            </select>
+                        </div>
 
-    <!-- Байланыш -->
-    <section id="contact" class="contact">
-        <div class="contact-box" data-aos="zoom-in">
-            <h2>Акысыз машыгууга <span>жазылыңыз</span></h2>
-            <form id="fitness-form">
-                <input type="text" id="form-name" placeholder="Атыңыз" required>
-                <input type="tel" id="form-phone" placeholder="Телефон номериңиз (жөн гана сандар)" required>
-                <select id="formSelect">
-                    <option>Тренажер залы</option>
-                    <option>Йога & Пилатес</option>
-                    <option>Кроссфит</option>
-                </select>
-                <button type="submit" class="btn-submit">Премиум конок болуу</button>
-            </form>
-            <div id="form-message"></div>
-        </div>
-    </section>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Кайдан</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-location-dot absolute left-3 top-3.5 text-slate-400"></i>
+                                <input type="text" id="search-from" oninput="searchTrips()" placeholder="Мисалы: Кара-Көл" class="w-full border border-slate-200 pl-9 pr-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50">
+                            </div>
+                        </div>
 
-    <!-- Фишка: Жарык/Кара тема алмаштыргыч баскыч -->
-    <div class="theme-switcher" id="themeBtn" title="Теманы алмаштыруу">
-        <i class="fas fa-moon"></i>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Кайда</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-flag-checkered absolute left-3 top-3.5 text-slate-400"></i>
+                                <input type="text" id="search-to" oninput="searchTrips()" placeholder="Мисалы: Бишкек" class="w-full border border-slate-200 pl-9 pr-4 py-2.5 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50">
+                            </div>
+                        </div>
+
+                        <button onclick="searchTrips()" class="w-full bg-blue-600 text-white py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition shadow-md shadow-blue-200">
+                            Издөө 🔍
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Интерактивдүү Карта -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-map-location-dot text-blue-500"></i> Активдүү багыттар картасы
+                    </h3>
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <!-- Оң тилке: Жарыялардын тизмеси -->
+            <div class="lg:col-span-2 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold text-slate-900">Жаңы сунушталган каттамдар</h2>
+                    <span id="ads-count" class="text-xs bg-slate-200 text-slate-700 font-bold px-2.5 py-1 rounded-full">0 жарыя</span>
+                </div>
+                
+                <div id="ads-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Маалыматтар ушул жерге JS менен кошулат -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= АЙДООЧУЛАР БӨЛҮМҮ (ЖАРЫЯ КОШУУ БӨЛҮМҮ) ================= -->
+        <section id="driver-section" class="hidden max-w-2xl mx-auto">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-slate-100">
+                <div class="flex items-center gap-3 border-b pb-4 mb-6">
+                    <span class="text-3xl">🚖</span>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Каттам тууралуу жарыялоо</h2>
+                        <p class="text-sm text-slate-500">Жүргүнчүлөрдү таап, сапарды чогуу баштаңыз</p>
+                    </div>
+                </div>
+                
+                <form id="taxi-form" onsubmit="saveForm(event)" class="space-y-5">
+                    
+                    <!-- Жарыянын түрү -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Сиздин кызматыңыздын түрү</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="border p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition border-blue-500 bg-blue-50" id="label-type-prof">
+                                <input type="radio" name="taxi-type" value="professional" checked onchange="toggleTypeUI('professional')" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                <div>
+                                    <p class="font-bold text-sm text-slate-900">⭐ Профессионалдык такси</p>
+                                    <p class="text-xs text-slate-500">Заказ менен баруучу унаа</p>
+                                </div>
+                            </label>
+                            <label class="border p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition border-slate-200" id="label-type-casual">
+                                <input type="radio" name="taxi-type" value="casual" onchange="toggleTypeUI('casual')" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                <div>
+                                    <p class="font-bold text-sm text-slate-900">🚗 Жөнөкөй Попутка</p>
+                                    <p class="text-xs text-slate-500">Тең жолдош менен багытташ</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Кайдан (Баштапкы дарек)</label>
+                            <input type="text" id="trip-from" placeholder="Мисалы: Кара-Көл, борбордук базар" required class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Кайда (Акыркы дарек)</label>
+                            <input type="text" id="trip-to" placeholder="Мисалы: Бишкек, Ала-Тоо аянты" required class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Машинанын маркасы</label>
+                            <input type="text" id="car-brand" placeholder="Мисалы: Toyota Camry 70" required class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Мамлекеттик номери</label>
+                            <input type="text" id="car-number" placeholder="Мисалы: 01KG777AAZ" required class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition uppercase">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Чыга турган күнү жана так сааты</label>
+                            <input type="datetime-local" id="trip-time" required class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Жол киреси (Бир орунга сом менен)</label>
+                            <input type="number" id="trip-price" placeholder="Мисалы: 1200" required class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        </div>
+                    </div>
+
+                    <!-- Жаңы Кошулган: Сүрөт жүктөө баскычы -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-dashed border-slate-300">
+                        <label class="block text-sm font-bold text-slate-700 mb-1">📸 Машинанын сүрөтүн тандаңыз</label>
+                        <p class="text-xs text-slate-500 mb-3">Сиздин машинаңыздын сапаттуу сүрөтүн телефондон же компьютерден жүктөңүз.</p>
+                        
+                        <div class="flex items-center gap-4">
+                            <label class="bg-blue-50 text-blue-600 border border-blue-200 px-4 py-2.5 rounded-xl font-medium cursor-pointer hover:bg-blue-100 transition inline-block text-sm">
+                                <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Файл тандаңыз...
+                                <input type="file" id="car-photo-file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                            </label>
+                            <div id="image-upload-preview" class="hidden flex items-center gap-2">
+                                <img id="preview-img-el" class="w-14 h-14 object-cover rounded-lg border border-slate-300" src="" alt="Алдын ала кароо">
+                                <span class="text-xs text-green-600 font-semibold"><i class="fa-solid fa-circle-check"></i> Сакталды</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition shadow-lg shadow-green-100">
+                        Жарыяны жайгаштыруу 🚀
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= ОТЗЫВДАР / ПИКИРЛЕР МОДАЛДЫК ТЕРЕЗЕСИ ================= -->
+    <div id="review-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 max-h-[90vh] flex flex-col">
+            <div class="bg-blue-600 p-5 text-white flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-bold">Айдоочунун сын-пикирлери</h3>
+                    <p id="modal-driver-title" class="text-xs text-blue-100">Айдоочу: Азамат</p>
+                </div>
+                <button onclick="closeReviewModal()" class="text-white/80 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Пикирлердин тизмеси -->
+            <div id="reviews-list" class="p-6 overflow-y-auto flex-grow space-y-4 max-h-[300px]">
+                <!-- Сын-пикирлер ушул жерге жүктөлөт -->
+            </div>
+
+            <!-- Пикир калтыруу формасы -->
+            <div class="p-6 bg-slate-50 border-t border-slate-100">
+                <h4 class="font-bold text-sm text-slate-800 mb-2">Бул айдоочуга пикир калтырыңыз</h4>
+                
+                <!-- Жылдызчаларды тандоо -->
+                <div class="flex gap-2 text-2xl text-slate-300 mb-3" id="rating-stars-select">
+                    <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(1)" data-val="1"></i>
+                    <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(2)" data-val="2"></i>
+                    <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(3)" data-val="3"></i>
+                    <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(4)" data-val="4"></i>
+                    <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(5)" data-val="5"></i>
+                </div>
+                
+                <input type="hidden" id="new-rating-value" value="5">
+                <textarea id="new-review-text" rows="3" placeholder="Айдоочунун кызматы, машинанын абалы кандай болду? Оюңузду жазыңыз..." class="w-full border border-slate-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white"></textarea>
+                
+                <button onclick="submitReview()" class="mt-3 w-full bg-blue-600 text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-blue-700 transition">
+                    Жиберүү 💬
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- Скрипттер -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- ================= КАТТАЛУУ ЖАНА КИРҮҮ МОДАЛДЫК ТЕРЕЗЕСИ ================= -->
+    <div id="auth-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100">
+            <!-- Табдарды алмаштыруу -->
+            <div class="flex border-b border-slate-100">
+                <button onclick="switchAuthTab('login')" id="btn-auth-login-tab" class="flex-1 py-4 text-center font-bold text-sm border-b-2 border-blue-600 text-blue-600">
+                    Кирүү
+                </button>
+                <button onclick="switchAuthTab('register')" id="btn-auth-reg-tab" class="flex-1 py-4 text-center font-bold text-sm text-slate-500 border-b-2 border-transparent">
+                    Катталуу
+                </button>
+            </div>
+
+            <!-- КИРҮҮ ФОРМАСЫ -->
+            <div id="auth-login-form" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Телефон номериңиз</label>
+                    <input type="tel" id="login-phone" placeholder="Мисалы: +996700112233" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Сыр сөз (Пароль)</label>
+                    <input type="password" id="login-password" placeholder="******" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition text-sm">
+                    Системага кирүү 🔑
+                </button>
+                <button onclick="closeAuthModal()" class="w-full bg-slate-100 text-slate-700 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition text-sm">
+                    Жабуу
+                </button>
+            </div>
+
+            <!-- КАТТАЛУУ ФОРМАСЫ -->
+            <div id="auth-register-form" class="hidden p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Толук атыңыз</label>
+                    <input type="text" id="reg-name" placeholder="Мисалы: Айбек Саматов" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Телефон номериңиз</label>
+                    <input type="tel" id="reg-phone" placeholder="+996700112233" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ролуңуз</label>
+                    <select id="reg-role" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm font-semibold">
+                        <option value="driver">🚘 Мен Айдоочумун</option>
+                        <option value="passenger">👨‍✈️ Мен Жүргүнчүмүн</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Сыр сөз түзүңүз</label>
+                    <input type="password" id="reg-password" placeholder="Сыр сөз" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
+                </div>
+                <button onclick="handleRegister()" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 transition text-sm">
+                    Катталууну аяктоо ✨
+                </button>
+                <button onclick="closeAuthModal()" class="w-full bg-slate-100 text-slate-700 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition text-sm">
+                    Жабуу
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= ЖАЗЫЛГАН ЛОГИКА ЖАНА СКРИПТТЕР ================= -->
     <script>
-        AOS.init({ duration: 1000, once: true });
+        // БАШТАПКУ ЖАСАЛМА МААЛЫМАТТАР
+        const defaultAds = [
+            {
+                id: 101,
+                name: "Азамат",
+                phone: "+996700112233",
+                brand: "Toyota Camry 70",
+                number: "01KG777AAZ", // Сүрөттөгү унаанын номери жайгаштырылды
+                from: "Кара-Көл",
+                to: "Бишкек",
+                time: "2026-06-15T08:30",
+                price: "1200",
+                type: "professional",
+                // Негизги унаанын сүрөтүн камтыган реалдуу сурот
+                photo: "https://carsweek.ru/upload/resize_cache/iblock/196/1200_900_1/6t6z8fynnfw36oonwkv1esg7vhgcyigq.jpg"
+            },
+            {
+                id: 102,
+                name: "Улан",
+                phone: "+996555443322",
+                brand: "Honda Fit",
+                number: "04KG123XYZ",
+                from: "Ош",
+                to: "Жалал-Абад",
+                time: "2026-06-10T14:00",
+                price: "400",
+                type: "casual",
+                photo: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=500"
+            }
+        ];
 
-        // МОБИЛДИК МЕНЮ ЛОГИКАСЫ
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navMenu = document.getElementById('nav-menu');
+        const defaultReviews = [
+            { driverPhone: "+996700112233", reviewerName: "Бакыт Сапаров", rating: 5, text: "Эң сонун айдоочу экен, унаасы абдан таза жана тез жеткирди! Рахмат!", date: "2026-05-20" },
+            { driverPhone: "+996700112233", reviewerName: "Алина", rating: 4, text: "Жакшы бардык, бирок бир аз кечигип чыктык. Башка баары жакты.", date: "2026-05-25" },
+            { driverPhone: "+996555443322", reviewerName: "Мирбек", rating: 5, text: "Абдан шайыр улан экен, жол кыскарды. Баасы да арзан экен.", date: "2026-05-18" }
+        ];
 
-        mobileMenu.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
+        // LOCAL STORAGE МЕНЕН ИШТӨӨ
+        let ads = JSON.parse(localStorage.getItem('sapardash_ads')) || defaultAds;
+        let reviews = JSON.parse(localStorage.getItem('sapardash_reviews')) || defaultReviews;
+        let users = JSON.parse(localStorage.getItem('sapardash_users')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('sapardash_current_user')) || null;
+        
+        let map;
+        let currentUploadedImageBase64 = "";
+        let activeDriverPhoneForReview = "";
 
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-            });
-        });
+        // КАРТАНЫ КУРУУ ЖАНА КЫРГЫЗСТАНГА БАГЫТТОО
+        function initMap() {
+            map = L.map('map').setView([41.2044, 74.7661], 6); 
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap салым кошуучулары'
+            }).addTo(map);
 
-        // СВЕТЛАЯ / ТЕМНАЯ ТЕМА ЛОГИКАСЫ (Фишка)
-        const themeBtn = document.getElementById('themeBtn');
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-
-        if (currentTheme === 'light') {
-            document.documentElement.setAttribute('data-theme', 'light');
-            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            // Маанилүү шаарлардын маркерлерин кошуу
+            L.marker([41.6333, 72.2000]).addTo(map).bindPopup("<b>Кара-Көл шаары</b><br>Активдүү каттамдар бар.");
+            L.marker([42.8746, 74.5698]).addTo(map).bindPopup("<b>Бишкек шаары</b><br>Башкы багыттардын борбору.");
+            L.marker([40.5140, 72.8161]).addTo(map).bindPopup("<b>Ош шаары</b>");
         }
 
-        themeBtn.addEventListener('click', () => {
-            let theme = document.documentElement.getAttribute('data-theme');
-            if (theme === 'light') {
-                document.documentElement.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'dark');
-                themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+        // БӨЛҮМДӨРДҮ КӨРСӨТҮҮ/КАТУУ (ТАБДАР)
+        function switchTab(tab) {
+            const passengerSec = document.getElementById('passenger-section');
+            const driverSec = document.getElementById('driver-section');
+            const pBtn = document.getElementById('btn-passenger-tab');
+            const dBtn = document.getElementById('btn-driver-tab');
+
+            if (tab === 'passenger') {
+                passengerSec.classList.remove('hidden');
+                driverSec.classList.add('hidden');
+                pBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold bg-white text-blue-600 shadow transition-all";
+                dBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold text-white hover:bg-blue-600 transition-all";
+                setTimeout(() => map.invalidateSize(), 200); 
             } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                localStorage.setItem('theme', 'light');
-                themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                // Айдоочулар бөлүмүнө кирүүдөн мурда логинди текшерүү
+                if (!currentUser) {
+                    alert("Жарыя кошуу үчүн адегенде катталыңыз же системага кириңиз!");
+                    openAuthModal('register');
+                    return;
+                }
+                
+                passengerSec.classList.add('hidden');
+                driverSec.classList.remove('hidden');
+                dBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold bg-white text-blue-600 shadow transition-all";
+                pBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold text-white hover:bg-blue-600 transition-all";
             }
-        });
-
-        // МОДАЛДЫК ТЕРЕЗЕ МААЛЫМАТТАРЫ
-        const modalData = {
-            gym: {
-                title: "Тренажер Залы",
-                details: `
-                    <li><i class="fas fa-star"></i> <b>Баасы:</b> 2500 сом / айына</li>
-                    <li><i class="fas fa-clock"></i> <b>Убактысы:</b> 07:00 - 23:00</li>
-                    <li><i class="fas fa-check"></i> <b>Камтылган:</b> Душ, Фин саунасы, Инструктаж, Сүлгү</li>
-                `,
-                selectIndex: 0
-            },
-            yoga: {
-                title: "Йога & Пилатес",
-                details: `
-                    <li><i class="fas fa-star"></i> <b>Баасы:</b> 2200 сом / айына</li>
-                    <li><i class="fas fa-clock"></i> <b>Убактысы:</b> Шаршемби, Жума - 10:00</li>
-                    <li><i class="fas fa-check"></i> <b>Камтылган:</b> Йога килемчелери, фитболдор, дем алуу терапиясы</li>
-                `,
-                selectIndex: 1
-            },
-            crossfit: {
-                title: "Кроссфит (Cardio)",
-                details: `
-                    <li><i class="fas fa-star"></i> <b>Баасы:</b> 3000 сом / айына</li>
-                    <li><i class="fas fa-clock"></i> <b>Убактысы:</b> Дүйшөмбү, Жума - 08:00</li>
-                    <li><i class="fas fa-check"></i> <b>Программа:</b> Май эритүүчү интенсив, Жүрөк-кан тамыр системасын чыңдоо</li>
-                `,
-                selectIndex: 2
-            }
-        };
-
-        function openModal(type) {
-            const modal = document.getElementById('modalOverlay');
-            document.getElementById('modalTitle').innerText = modalData[type].title;
-            document.getElementById('modalDetails').innerHTML = modalData[type].details;
-            document.getElementById('formSelect').selectedIndex = modalData[type].selectIndex;
-            modal.classList.add('active');
         }
 
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('active');
+        // АВТОРИЗАЦИЯ УПРАВЛЕНИЕСИ
+        function updateAuthUI() {
+            const container = document.getElementById('auth-status');
+            if (currentUser) {
+                container.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-blue-200">👋 Салам, ${currentUser.name} (${currentUser.role === 'driver' ? 'Айдоочу' : 'Жүргүнчү'})</span>
+                        <button onclick="handleLogout()" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg text-xs font-bold transition">Чыгуу</button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-user-plus"></i> Кирүү / Катталуу
+                    </button>
+                `;
+            }
         }
 
-        // РАСПИСАНИЕ ФИЛЬТРИ
-        function filterDay(day, e) {
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            if(e && e.target) e.target.classList.add('active');
+        function openAuthModal(mode) {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            switchAuthTab(mode);
+        }
 
-            const items = document.querySelectorAll('.schedule-item');
-            items.forEach(item => {
-                if (day === 'all' || item.classList.contains(day)) {
-                    item.style.display = 'flex';
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthTab(mode) {
+            const loginForm = document.getElementById('auth-login-form');
+            const regForm = document.getElementById('auth-register-form');
+            const loginBtn = document.getElementById('btn-auth-login-tab');
+            const regBtn = document.getElementById('btn-auth-reg-tab');
+
+            if (mode === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                loginBtn.className = "flex-1 py-4 text-center font-bold text-sm border-b-2 border-blue-600 text-blue-600";
+                regBtn.className = "flex-1 py-4 text-center font-bold text-sm text-slate-500 border-b-2 border-transparent";
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                regBtn.className = "flex-1 py-4 text-center font-bold text-sm border-b-2 border-green-600 text-green-600";
+                loginBtn.className = "flex-1 py-4 text-center font-bold text-sm text-slate-500 border-b-2 border-transparent";
+            }
+        }
+
+        function handleRegister() {
+            const name = document.getElementById('reg-name').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const role = document.getElementById('reg-role').value;
+            const password = document.getElementById('reg-password').value.trim();
+
+            if (!name || !phone || !password) {
+                alert("Сураныч, баардык кутучаларды толтуруңуз!");
+                return;
+            }
+
+            // Номер катталганбы текшерүү
+            const exists = users.find(u => u.phone === phone);
+            if (exists) {
+                alert("Мындай телефон номер мурун катталган!");
+                return;
+            }
+
+            const newUser = { name, phone, role, password };
+            users.push(newUser);
+            localStorage.setItem('sapardash_users', JSON.stringify(users));
+
+            currentUser = newUser;
+            localStorage.setItem('sapardash_current_user', JSON.stringify(currentUser));
+            
+            alert("Ийгиликтүү катталдыңыз!");
+            closeAuthModal();
+            updateAuthUI();
+        }
+
+        function handleLogin() {
+            const phone = document.getElementById('login-phone').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+
+            if (!phone || !password) {
+                alert("Сураныч, маалыматтарды толук киргизиңиз!");
+                return;
+            }
+
+            const user = users.find(u => u.phone === phone && u.password === password);
+            
+            // Жасалма тесттик колдонуучу Азамат менен кирүү мүмкүнчүлүгү
+            if (!user && phone === "+996700112233" && password === "123") {
+                currentUser = { name: "Азамат", phone: "+996700112233", role: "driver" };
+                localStorage.setItem('sapardash_current_user', JSON.stringify(currentUser));
+                alert("Авторизацияландыңыз!");
+                closeAuthModal();
+                updateAuthUI();
+                return;
+            }
+
+            if (!user) {
+                alert("Телефон номериңиз же сыр сөзүңүз туура эмес!");
+                return;
+            }
+
+            currentUser = user;
+            localStorage.setItem('sapardash_current_user', JSON.stringify(currentUser));
+            
+            alert("Кайрадан кош келиңиз!");
+            closeAuthModal();
+            updateAuthUI();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('sapardash_current_user');
+            updateAuthUI();
+            switchTab('passenger');
+            alert("Системадан чыктыңыз.");
+        }
+
+        // АЙДООЧУНУН РЕЙТИНГИН ЭСЕПТӨӨ (ЖЫЛДЫЗЧАЛАР)
+        function getDriverRating(phone) {
+            const driverRev = reviews.filter(r => r.driverPhone === phone);
+            if (driverRev.length === 0) return { avg: 5.0, count: 0 };
+            
+            const sum = driverRev.reduce((acc, r) => acc + r.rating, 0);
+            return {
+                avg: (sum / driverRev.length).toFixed(1),
+                count: driverRev.length
+            };
+        }
+
+        function getStarsHtml(rating) {
+            let starsHtml = "";
+            const floor = Math.floor(rating);
+            for (let i = 1; i <= 5; i++) {
+                if (i <= floor) {
+                    starsHtml += `<i class="fa-solid fa-star text-amber-400"></i>`;
                 } else {
-                    item.style.display = 'none';
+                    starsHtml += `<i class="fa-solid fa-star text-slate-200"></i>`;
+                }
+            }
+            return starsHtml;
+        }
+
+        // КАРТОЧКАЛАРДЫ КҮЙГҮЗҮҮ (RENDER)
+        function renderAds(filteredAds = ads) {
+            const container = document.getElementById('ads-container');
+            const countLabel = document.getElementById('ads-count');
+            const typeFilter = document.getElementById('filter-type').value;
+            container.innerHTML = '';
+
+            let finalAds = filteredAds;
+            if (typeFilter !== 'all') {
+                finalAds = filteredAds.filter(ad => ad.type === typeFilter);
+            }
+
+            countLabel.textContent = `${finalAds.length} жарыя табылды`;
+
+            if (finalAds.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-100">
+                        <span class="text-4xl">🤷‍♂️</span>
+                        <p class="text-slate-500 mt-2 font-medium">Каттамдар азырынча жок же табылган жок.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            finalAds.forEach(ad => {
+                const badgeColor = ad.type === 'professional' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-green-100 text-green-800 border-green-200';
+                const badgeText = ad.type === 'professional' ? '⭐ Профессионал Такси' : '🚗 Жөнөкөй Попутка';
+                const defaultCarImg = "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500";
+                
+                // Датаны сулуу форматтоо
+                const dateOptions = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                const formattedDate = new Date(ad.time).toLocaleDateString('ky-KG', dateOptions);
+
+                // Айдоочунун рейтингин алуу
+                const ratingInfo = getDriverRating(ad.phone);
+
+                container.innerHTML += `
+                    <div class="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300">
+                        <div class="relative h-48 bg-slate-100">
+                            <img src="${ad.photo || defaultCarImg}" alt="Машинанын сүрөтү" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg border shadow-sm ${badgeColor}">
+                                ${badgeText}
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <!-- Баасы жана Багыты -->
+                            <div class="flex justify-between items-start gap-2">
+                                <div>
+                                    <h3 class="text-lg font-bold text-slate-900 leading-tight">${ad.from} ➔ ${ad.to}</h3>
+                                    <p class="text-xs text-slate-400 mt-1">📅 Чыгуу убактысы: <span class="font-semibold text-slate-700">${formattedDate}</span></p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xl font-black text-blue-600 block">${ad.price} сом</span>
+                                    <span class="text-[10px] text-slate-400">бир орунга</span>
+                                </div>
+                            </div>
+
+                            <!-- Айдоочу тууралуу маалымат жана жылдызчалары -->
+                            <div class="bg-slate-50 p-3 rounded-xl space-y-2 text-sm text-slate-600">
+                                <div class="flex justify-between items-center">
+                                    <p class="font-semibold text-slate-800">👤 Айдоочу: <span class="font-normal text-slate-600">${ad.name}</span></p>
+                                    <button onclick="openReviewModal('${ad.phone}', '${ad.name}')" class="text-xs text-blue-600 hover:underline font-semibold">
+                                        Отзывдар (${ratingInfo.count})
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between border-t border-slate-200/60 pt-2">
+                                    <div class="flex items-center gap-1">
+                                        ${getStarsHtml(ratingInfo.avg)}
+                                        <span class="text-xs font-bold text-slate-700 ml-1">${ratingInfo.avg}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 font-medium">🚘 ${ad.brand} [<span class="text-slate-800 font-bold">${ad.number}</span>]</p>
+                                </div>
+                            </div>
+
+                            <!-- Байланыш баскычы -->
+                            <div class="pt-2">
+                                <a href="tel:${ad.phone}" class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 shadow-sm text-sm">
+                                    <i class="fa-solid fa-phone"></i> Чалуу: ${ad.phone}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // ИЗДӨӨ ИШИ
+        function searchTrips() {
+            const fromVal = document.getElementById('search-from').value.toLowerCase().trim();
+            const toVal = document.getElementById('search-to').value.toLowerCase().trim();
+
+            const filtered = ads.filter(ad => {
+                const matchFrom = ad.from.toLowerCase().includes(fromVal);
+                const matchTo = ad.to.toLowerCase().includes(toVal);
+                return matchFrom && matchTo;
+            });
+
+            renderAds(filtered);
+        }
+
+        // ЖАҢЫ ЖАРЫЯЛООНУ САКТОО
+        function saveForm(event) {
+            event.preventDefault();
+
+            if (!currentUser) {
+                alert("Жарыя кошуу үчүн адегенде катталуу керек!");
+                openAuthModal('register');
+                return;
+            }
+
+            const tripFrom = document.getElementById('trip-from').value.trim();
+            const tripTo = document.getElementById('trip-to').value.trim();
+            const carBrand = document.getElementById('car-brand').value.trim();
+            const carNumber = document.getElementById('car-number').value.trim();
+            const tripTime = document.getElementById('trip-time').value;
+            const tripPrice = document.getElementById('trip-price').value;
+            const taxiType = document.querySelector('input[name="taxi-type"]:checked').value;
+
+            const newAd = {
+                id: Date.now(),
+                name: currentUser.name,
+                phone: currentUser.phone,
+                brand: carBrand,
+                number: carNumber.toUpperCase(),
+                from: tripFrom,
+                to: tripTo,
+                time: tripTime,
+                price: tripPrice,
+                type: taxiType,
+                photo: currentUploadedImageBase64 // Биздин файлдан алынган Base64 сүрөтү ушул жерге сакталат
+            };
+
+            ads.unshift(newAd);
+            localStorage.setItem('sapardash_ads', JSON.stringify(ads));
+
+            // Форманы баштапкы абалга келтирүү
+            document.getElementById('taxi-form').reset();
+            currentUploadedImageBase64 = "";
+            document.getElementById('image-upload-preview').classList.add('hidden');
+
+            alert("Жарыяңыз ийгиликтүү кошулду!");
+            switchTab('passenger');
+            renderAds();
+        }
+
+        // ТАНДАЛГАН УНАА СҮРӨТҮНҮН ФАЙЛЫН АЛЫП БАЗАГА ДАЯРДОО
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Файлдын өлчөмүн чектөө (мисалы, 3Мб чейин)
+            if (file.size > 3 * 1024 * 1024) {
+                alert("Жүктөлүүчү сүрөт өтө чоң! Сураныч, 3Мб ашпаган сүрөт тандаңыз.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentUploadedImageBase64 = e.target.result;
+                
+                // Сүрөттү алдын ала кароо кутусун көрсөтүү
+                const previewDiv = document.getElementById('image-upload-preview');
+                const previewImg = document.getElementById('preview-img-el');
+                previewImg.src = e.target.result;
+                previewDiv.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // КЫЗМАТ ТҮРҮН ТАНДООДОГУ ВИЗУАЛДЫК СТИЛДЕР
+        function toggleTypeUI(type) {
+            const pLabel = document.getElementById('label-type-prof');
+            const cLabel = document.getElementById('label-type-casual');
+
+            if (type === 'professional') {
+                pLabel.className = "border p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition border-blue-500 bg-blue-50";
+                cLabel.className = "border p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition border-slate-200 bg-white";
+            } else {
+                cLabel.className = "border p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition border-blue-500 bg-blue-50";
+                pLabel.className = "border p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition border-slate-200 bg-white";
+            }
+        }
+
+        // СЫН-ПИКИРЛЕР (ОТЗЫВДАР) ТУТУМУ
+        function openReviewModal(driverPhone, driverName) {
+            activeDriverPhoneForReview = driverPhone;
+            document.getElementById('modal-driver-title').textContent = `Айдоочу: ${driverName}`;
+            document.getElementById('review-modal').classList.remove('hidden');
+            renderReviewsList();
+        }
+
+        function closeReviewModal() {
+            document.getElementById('review-modal').classList.add('hidden');
+            activeDriverPhoneForReview = "";
+        }
+
+        function renderReviewsList() {
+            const listContainer = document.getElementById('reviews-list');
+            listContainer.innerHTML = '';
+
+            const activeReviews = reviews.filter(r => r.driverPhone === activeDriverPhoneForReview);
+
+            if (activeReviews.length === 0) {
+                listContainer.innerHTML = `<p class="text-sm text-slate-500 text-center py-4">Бул айдоочуга пикир жазыла элек. Биринчи болуп калтырыңыз!</p>`;
+                return;
+            }
+
+            activeReviews.forEach(r => {
+                listContainer.innerHTML += `
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-1">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-sm text-slate-800">${r.reviewerName}</span>
+                            <span class="text-xs text-slate-400">${r.date}</span>
+                        </div>
+                        <div class="flex gap-1 text-xs mb-1">
+                            ${getStarsHtml(r.rating)}
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">${r.text}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // ЖЫЛДЫЗЧА ТАНДОО
+        function setRatingValue(val) {
+            document.getElementById('new-rating-value').value = val;
+            
+            // Жылдызчалардын өңүн активдүү кылуу
+            const stars = document.querySelectorAll('#rating-stars-select i');
+            stars.forEach((star, index) => {
+                if (index < val) {
+                    star.className = "fa-solid fa-star text-amber-400 cursor-pointer transition";
+                } else {
+                    star.className = "fa-solid fa-star text-slate-300 cursor-pointer transition";
                 }
             });
         }
 
-        // ВАЛИДАЦИЯ ЖАНА ФОРМАНЫ ЖӨНӨТҮҮ
-        document.getElementById('fitness-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('form-name').value.trim();
-            const phone = document.getElementById('form-phone').value.trim();
-            const msgBox = document.getElementById('form-message');
-
-            if(name.length < 2) {
-                msgBox.innerHTML = "<p style='color: red; margin-top: 15px;'>Сураныч, туура атыңызды жазыңыз.</p>";
+        // ОТЗЫВ КОШУУ
+        function submitReview() {
+            if (!currentUser) {
+                alert("Отзыв калтыруу үчүн алгач катталыңыз же системага кириңиз!");
+                openAuthModal('register');
                 return;
             }
 
-            // Номерди текшерүү фишкасы
-            if(isNaN(phone) || phone.length < 9) {
-                msgBox.innerHTML = "<p style='color: red; margin-top: 15px;'>Сураныч, туура телефон номерин жазыңыз.</p>";
+            const text = document.getElementById('new-review-text').value.trim();
+            const rating = parseInt(document.getElementById('new-rating-value').value);
+
+            if (!text) {
+                alert("Сураныч, пикириңизди жазыңыз!");
                 return;
             }
 
-            msgBox.innerHTML = "<p style='color: #D4AF37; margin-top: 25px; font-weight: bold; letter-spacing: 1px;'>ИЙГИЛИКТҮҮ КАТТАЛДЫҢЫЗ! Менеджер жакында байланышат.</p>";
-            this.reset();
-        });
+            // Бүгүнкү күндүн форматы
+            const today = new Date().toISOString().split('T')[0];
+
+            const newRev = {
+                driverPhone: activeDriverPhoneForReview,
+                reviewerName: currentUser.name,
+                rating: rating,
+                text: text,
+                date: today
+            };
+
+            reviews.push(newRev);
+            localStorage.setItem('sapardash_reviews', JSON.stringify(reviews));
+
+            // Тазалоо
+            document.getElementById('new-review-text').value = "";
+            setRatingValue(5);
+
+            alert("Пикириңиз ийгиликтүү кабыл алынды!");
+            renderReviewsList();
+            renderAds(); // Башкы беттеги отзывдардын санын жана орточо рейтингти жаңылоо
+        }
+
+        // ТИРКЕМЕ БАШТАЛГАНДА ИШТӨӨЧҮЛӨР
+        window.onload = function() {
+            initMap();
+            updateAuthUI();
+            renderAds();
+        };
     </script>
 </body>
 </html>
