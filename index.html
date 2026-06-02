@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сапарkаш — Шаараралык Попутка жана Такси</title>
+    <title>Сапардаш — Шаараралык Попутка жана Такси</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Rubik -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Leaflet Картасынын куралдары -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
@@ -22,6 +26,7 @@
             z-index: 1; 
             border: 2px solid #e2e8f0;
         }
+        /* Скроллду сулуу көрсөтүү */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -36,17 +41,19 @@
 </head>
 <body class="bg-slate-50 text-slate-800">
 
+    <!-- НАВИГАЦИЯ (HEADER) -->
     <header class="bg-blue-600 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <span class="text-3xl">🚗</span>
                 <div>
                     <h1 class="text-2xl font-bold tracking-wide">Сапардаш</h1>
-                    <p class="text-xs text-blue-200">Ишенимдүү shaara-aralyk joldosh</p>
+                    <p class="text-xs text-blue-200">Ишенимдүү шаараралык жолдош</p>
                 </div>
             </div>
             
             <div class="flex items-center flex-wrap gap-3">
+                <!-- Пассажир / Айдоочу бөлүмдөрүнүн баскычтары -->
                 <div class="flex bg-blue-700 p-1 rounded-xl">
                     <button id="btn-passenger-tab" onclick="switchTab('passenger')" class="px-4 py-2 rounded-lg text-sm font-semibold bg-white text-blue-600 shadow transition-all">
                         👨‍✈️ Жүргүнчүлөр
@@ -55,14 +62,21 @@
                         🚖 Айдоочулар
                     </button>
                 </div>
-                <div id="auth-status" class="flex items-center gap-2 bg-blue-800 px-4 py-2 rounded-xl text-sm"></div>
+
+                <!-- Колдонуучунун профили жана Кирүү баскычы -->
+                <div id="auth-status" class="flex items-center gap-2 bg-blue-800 px-4 py-2 rounded-xl text-sm">
+                    <!-- Бул жерге JS аркылуу кирүү абалы же колдонуучунун аты жазылат -->
+                </div>
             </div>
         </div>
     </header>
 
     <main class="container mx-auto px-4 py-8">
         
+        <!-- ================= ЖҮРГҮНЧҮЛӨР БӨЛҮМҮ (ПАССАЖИР ТАБ) ================= -->
         <section id="passenger-section" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Сол тилке: Фильтр жана Издөө, Карта -->
             <div class="lg:col-span-1 space-y-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                     <h2 class="text-lg font-bold mb-4 text-slate-900 flex items-center gap-2">
@@ -101,6 +115,7 @@
                     </div>
                 </div>
 
+                <!-- Интерактивдүү Карта -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                     <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
                         <i class="fa-solid fa-map-location-dot text-blue-500"></i> Активдүү багыттар картасы
@@ -109,17 +124,21 @@
                 </div>
             </div>
 
+            <!-- Оң тилке: Жарыялардын тизмеси -->
             <div class="lg:col-span-2 space-y-4">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-bold text-slate-900">Жаңы сунушталган каттамдар</h2>
                     <span id="ads-count" class="text-xs bg-slate-200 text-slate-700 font-bold px-2.5 py-1 rounded-full">0 жарыя</span>
                 </div>
                 
-                <div id="ads-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                <div id="ads-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Маалыматтар ушул жерге JS менен кошулат -->
+                </div>
             </div>
         </section>
 
 
+        <!-- ================= АЙДООЧУЛАР БӨЛҮМҮ (ЖАРЫЯ КОШУУ БӨЛҮМҮ) ================= -->
         <section id="driver-section" class="hidden max-w-2xl mx-auto">
             <div class="bg-white p-8 rounded-2xl shadow-md border border-slate-100">
                 <div class="flex items-center gap-3 border-b pb-4 mb-6">
@@ -131,6 +150,8 @@
                 </div>
                 
                 <form id="taxi-form" onsubmit="saveForm(event)" class="space-y-5">
+                    
+                    <!-- Жарыянын түрү -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">Сиздин кызматыңыздын түрү</label>
                         <div class="grid grid-cols-2 gap-4">
@@ -184,18 +205,25 @@
                         </div>
                     </div>
 
+                    <!-- Модификацияланган: Сүрөт жүктөө жана Камера бөлүмү -->
                     <div class="bg-slate-50 p-4 rounded-xl border border-dashed border-slate-300">
-                        <label class="block text-sm font-bold text-slate-700 mb-1">📸 Машинанын сүрөтүн тартыңыз же тандаңыз</label>
-                        <p class="text-xs text-slate-500 mb-3">Телефондун камерасы менен түз сүрөткө тартыңыз же галереядан жүктөңүз.</p>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">📸 Машинанын сүрөтүн кошуңуз</label>
+                        <p class="text-xs text-slate-500 mb-3">Сүрөттү файлдан тандаңыз же түз эле камерадан тартыңыз.</p>
                         
-                        <div class="flex items-center gap-4">
-                            <label class="bg-blue-600 text-white px-5 py-3 rounded-xl font-semibold cursor-pointer hover:bg-blue-700 transition inline-block text-sm shadow-md shadow-blue-100">
-                                <i class="fa-solid fa-camera mr-2"></i> Камера / Галерея
+                        <div class="flex flex-wrap items-center gap-3">
+                            <label class="bg-blue-50 text-blue-600 border border-blue-200 px-4 py-2.5 rounded-xl font-medium cursor-pointer hover:bg-blue-100 transition inline-block text-sm">
+                                <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Файл тандаңыз...
                                 <input type="file" id="car-photo-file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
                             </label>
+
+                            <!-- КАМЕРА БАСКЫЧЫ -->
+                            <button type="button" onclick="openCameraModal()" class="bg-slate-800 text-white px-4 py-2.5 rounded-xl font-medium hover:bg-slate-900 transition flex items-center text-sm">
+                                <i class="fa-solid fa-camera mr-2"></i> Камера менен тартуу
+                            </button>
+
                             <div id="image-upload-preview" class="hidden flex items-center gap-2">
                                 <img id="preview-img-el" class="w-14 h-14 object-cover rounded-lg border border-slate-300" src="" alt="Алдын ала кароо">
-                                <span class="text-xs text-green-600 font-semibold"><i class="fa-solid fa-circle-check"></i> Даяр</span>
+                                <span class="text-xs text-green-600 font-semibold"><i class="fa-solid fa-circle-check"></i> Сакталды</span>
                             </div>
                         </div>
                     </div>
@@ -209,6 +237,38 @@
 
     </main>
 
+    <!-- ================= ЖАҢЫ КОШУЛДУ: КАМЕРА МОДАЛДЫК ТЕРЕЗЕСИ ================= -->
+    <div id="camera-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl p-5 space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-camera text-blue-600"></i> Камера аркылуу тартуу
+                </h3>
+                <button onclick="closeCameraModal()" class="text-slate-400 hover:text-slate-600 text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <!-- Видео көрсөтүүчү аймак -->
+            <div class="relative bg-black rounded-xl overflow-hidden h-64 flex items-center justify-center">
+                <video id="camera-video" autoplay playsinline class="w-full h-full object-cover"></video>
+            </div>
+
+            <!-- Башкаруу баскычтары -->
+            <div class="flex gap-3">
+                <button onclick="closeCameraModal()" class="flex-1 bg-slate-100 text-slate-700 py-2.5 rounded-xl font-semibold text-sm hover:bg-slate-200 transition">
+                    Жабуу
+                </button>
+                <button onclick="takeSnapshot()" class="flex-1 bg-blue-600 text-white py-2.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle"></i> Тартуу
+                </button>
+            </div>
+            <canvas id="camera-canvas" class="hidden"></canvas>
+        </div>
+    </div>
+
+
+    <!-- ================= ОТЗЫВДАР / ПИКИРЛЕР МОДАЛДЫК ТЕРЕЗЕСИ ================= -->
     <div id="review-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 max-h-[90vh] flex flex-col">
             <div class="bg-blue-600 p-5 text-white flex justify-between items-center">
@@ -221,10 +281,16 @@
                 </button>
             </div>
 
-            <div id="reviews-list" class="p-6 overflow-y-auto flex-grow space-y-4 max-h-[300px]"></div>
+            <!-- Пикирлердин тизмеси -->
+            <div id="reviews-list" class="p-6 overflow-y-auto flex-grow space-y-4 max-h-[300px]">
+                <!-- Сын-пикирлер ушул жерге жүктөлөт -->
+            </div>
 
+            <!-- Пикир калтыруу формасы -->
             <div class="p-6 bg-slate-50 border-t border-slate-100">
                 <h4 class="font-bold text-sm text-slate-800 mb-2">Бул айдоочуга пикир калтырыңыз</h4>
+                
+                <!-- Жылдызчаларды тандоо -->
                 <div class="flex gap-2 text-2xl text-slate-300 mb-3" id="rating-stars-select">
                     <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(1)" data-val="1"></i>
                     <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(2)" data-val="2"></i>
@@ -232,8 +298,10 @@
                     <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(4)" data-val="4"></i>
                     <i class="fa-solid fa-star cursor-pointer hover:text-amber-400 transition" onclick="setRatingValue(5)" data-val="5"></i>
                 </div>
+                
                 <input type="hidden" id="new-rating-value" value="5">
-                <textarea id="new-review-text" rows="3" placeholder="Оюңузду жазыңыз..." class="w-full border border-slate-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white"></textarea>
+                <textarea id="new-review-text" rows="3" placeholder="Айдоочунун кызматы, машинанын абалы кандай болду? Оюңузду жазыңыз..." class="w-full border border-slate-200 p-3 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white"></textarea>
+                
                 <button onclick="submitReview()" class="mt-3 w-full bg-blue-600 text-white py-2.5 rounded-xl font-semibold text-sm hover:bg-blue-700 transition">
                     Жиберүү 💬
                 </button>
@@ -241,57 +309,73 @@
         </div>
     </div>
 
+
+    <!-- ================= КАТТАЛУУ ЖАНА КИРҮҮ МОДАЛДЫК ТЕРЕЗЕСИ ================= -->
     <div id="auth-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100">
+            <!-- Табдарды алмаштыруу -->
             <div class="flex border-b border-slate-100">
-                <button onclick="switchAuthTab('login')" id="btn-auth-login-tab" class="flex-1 py-4 text-center font-bold text-sm border-b-2 border-blue-600 text-blue-600">Кирүү</button>
-                <button onclick="switchAuthTab('register')" id="btn-auth-reg-tab" class="flex-1 py-4 text-center font-bold text-sm text-slate-500 border-b-2 border-transparent">Катталуу</button>
+                <button onclick="switchAuthTab('login')" id="btn-auth-login-tab" class="flex-1 py-4 text-center font-bold text-sm border-b-2 border-blue-600 text-blue-600">
+                    Кирүү
+                </button>
+                <button onclick="switchAuthTab('register')" id="btn-auth-reg-tab" class="flex-1 py-4 text-center font-bold text-sm text-slate-500 border-b-2 border-transparent">
+                    Катталуу
+                </button>
             </div>
 
+            <!-- КИРҮҮ ФОРМАСЫ -->
             <div id="auth-login-form" class="p-6 space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Телефон номериңиз</label>
-                    <input type="tel" id="login-phone" placeholder="Мисалы: +996700112233" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition text-sm bg-slate-50">
+                    <input type="tel" id="login-phone" placeholder="Мисалы: +996700112233" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Сыр сөз (Пароль)</label>
-                    <input type="password" id="login-password" placeholder="**" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition text-sm bg-slate-50">
+                    <input type="password" id="login-password" placeholder="******" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
                 </div>
-                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition text-sm">Системага кирүү 🔑</button>
-                <button onclick="closeAuthModal()" class="w-full bg-slate-100 text-slate-700 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition text-sm">Жабуу</button>
+                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition text-sm">
+                    Системага кирүү 🔑
+                </button>
+                <button onclick="closeAuthModal()" class="w-full bg-slate-100 text-slate-700 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition text-sm">
+                    Жабуу
+                </button>
             </div>
 
+            <!-- КАТТАЛУУ ФОРМАСЫ -->
             <div id="auth-register-form" class="hidden p-6 space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Толук атыңыз</label>
-                    <input type="text" id="reg-name" placeholder="Мисалы: Айбек Саматов" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition text-sm bg-slate-50">
+                    <input type="text" id="reg-name" placeholder="Мисалы: Айбек Саматов" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Телефон номериңиз</label>
-                    <input type="tel" id="reg-phone" placeholder="+996700112233" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition text-sm bg-slate-50">
+                    <input type="tel" id="reg-phone" placeholder="+996700112233" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ролуңуз</label>
-                    <select id="reg-role" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition text-sm bg-slate-50 font-semibold">
+                    <select id="reg-role" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm font-semibold">
                         <option value="driver">🚘 Мен Айдоочумун</option>
                         <option value="passenger">👨‍✈️ Мен Жүргүнчүмүн</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Сыр сөз түзүңүз</label>
-                    <input type="password" id="reg-password" placeholder="Сыр сөз" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition text-sm bg-slate-50">
+                    <input type="password" id="reg-password" placeholder="Сыр сөз" class="w-full border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 text-sm">
                 </div>
-                <button onclick="handleRegister()" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 transition text-sm">Катталууну аяктоо ✨</button>
-                <button onclick="closeAuthModal()" class="w-full bg-slate-100 text-slate-700 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition text-sm">Жабуу</button>
+                <button onclick="handleRegister()" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold hover:bg-green-700 transition text-sm">
+                    Катталууну аяктоо ✨
+                </button>
+                <button onclick="closeAuthModal()" class="w-full bg-slate-100 text-slate-700 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition text-sm">
+                    Жабуу
+                </button>
             </div>
         </div>
     </div>
 
-    <script>
-        // ИНТЕРНЕТТЕН ТҮЗ АЛЫНЧУ ИШЕНИМДҮҮ СҮРӨТТӨР (404 КАТАСЫ БОЛБОЙТ)
-        const DEFAULT_CAR_IMAGE = "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600&auto=format&fit=crop&q=60";
-        const CASUAL_CAR_IMAGE = "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=600&auto=format&fit=crop&q=60";
 
+    <!-- ================= ЖАЗЫЛГАН ЛОГИКА ЖАНА СКРИПТТЕР ================= -->
+    <script>
+        // БАШТАПКУ ЖАСАЛМА МААЛЫМАТТАР
         const defaultAds = [
             {
                 id: 101,
@@ -304,7 +388,7 @@
                 time: "2026-06-15T08:30",
                 price: "1200",
                 type: "professional",
-                photo: "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&auto=format&fit=crop&q=60"
+                photo: "https://carsweek.ru/upload/resize_cache/iblock/196/1200_900_1/6t6z8fynnfw36oonwkv1esg7vhgcyigq.jpg"
             },
             {
                 id: 102,
@@ -317,16 +401,20 @@
                 time: "2026-06-10T14:00",
                 price: "400",
                 type: "casual",
-                photo: CASUAL_CAR_IMAGE
+                photo: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=500"
             }
         ];
 
         const defaultReviews = [
             { driverPhone: "+996700112233", reviewerName: "Бакыт Сапаров", rating: 5, text: "Эң сонун айдоочу экен, унаасы абдан таза жана тез жеткирди! Рахмат!", date: "2026-05-20" },
-            { driverPhone: "+996700112233", reviewerName: "Алина", rating: 4, text: "Жакшы бардык, бир аз кечигип чыктык. Башка баары жакты.", date: "2026-05-25" },
+            { driverPhone: "+996700112233", reviewerName: "Алина", rating: 4, text: "Жакшы бардык, бирок бир аз кечигип чыктык. Башка баары жакты.", date: "2026-05-25" },
             { driverPhone: "+996555443322", reviewerName: "Мирбек", rating: 5, text: "Абдан шайыр улан экен, жол кыскарды. Баасы да арзан экен.", date: "2026-05-18" }
         ];
 
+        // Резервдик сүрөт (Эгер негизги сүрөт 404 катасын берсе ушул коюлат)
+        const BACKUP_CAR_IMAGE = "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=500";
+
+        // LOCAL STORAGE МЕНЕН ИШТӨӨ
         let ads = JSON.parse(localStorage.getItem('sapardash_ads')) || defaultAds;
         let reviews = JSON.parse(localStorage.getItem('sapardash_reviews')) || defaultReviews;
         let users = JSON.parse(localStorage.getItem('sapardash_users')) || [];
@@ -335,18 +423,22 @@
         let map;
         let currentUploadedImageBase64 = "";
         let activeDriverPhoneForReview = "";
+        let videoStream = null; // Камеранын агымы үчүн өзгөрмө
 
+        // КАРТАНЫ КУРУУ ЖАНА КЫРГЫЗСТАНГА БАГЫТТОО
         function initMap() {
             map = L.map('map').setView([41.2044, 74.7661], 6); 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
+                attribution: '© OpenStreetMap салым кошуучулары'
             }).addTo(map);
 
+            // Маанилүү шаарлардын маркерлерин кошуу
             L.marker([41.6333, 72.2000]).addTo(map).bindPopup("<b>Кара-Көл шаары</b><br>Активдүү каттамдар бар.");
-            L.marker([42.8746, 74.5698]).addTo(map).bindPopup("<b>Бишкек шаары</b>");
+            L.marker([42.8746, 74.5698]).addTo(map).bindPopup("<b>Бишкек шаары</b><br>Башкы багыттардын борбору.");
             L.marker([40.5140, 72.8161]).addTo(map).bindPopup("<b>Ош шаары</b>");
         }
 
+        // БӨЛҮМДӨРДҮ КӨРСӨТҮҮ/КАТУУ (ТАБДАР)
         function switchTab(tab) {
             const passengerSec = document.getElementById('passenger-section');
             const driverSec = document.getElementById('driver-section');
@@ -365,6 +457,7 @@
                     openAuthModal('register');
                     return;
                 }
+                
                 passengerSec.classList.add('hidden');
                 driverSec.classList.remove('hidden');
                 dBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold bg-white text-blue-600 shadow transition-all";
@@ -372,12 +465,13 @@
             }
         }
 
+        // АВТОРИЗАЦИЯ УПРАВЛЕНИЕСИ
         function updateAuthUI() {
             const container = document.getElementById('auth-status');
             if (currentUser) {
                 container.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <span class="font-bold text-blue-200">👋 Салам, ${currentUser.name}</span>
+                        <span class="font-bold text-blue-200">👋 Салам, ${currentUser.name} (${currentUser.role === 'driver' ? 'Айдоочу' : 'Жүргүнчү'})</span>
                         <button onclick="handleLogout()" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg text-xs font-bold transition">Чыгуу</button>
                     </div>
                 `;
@@ -425,13 +519,13 @@
             const password = document.getElementById('reg-password').value.trim();
 
             if (!name || !phone || !password) {
-                alert("Сураныч, кутучаларды толтуруңуз!");
+                alert("Сураныч, баардык кутучаларды толтуруңуз!");
                 return;
             }
 
             const exists = users.find(u => u.phone === phone);
             if (exists) {
-                alert("Мындай телефон номер катталган!");
+                alert("Мындай телефон номер мурун катталган!");
                 return;
             }
 
@@ -442,7 +536,7 @@
             currentUser = newUser;
             localStorage.setItem('sapardash_current_user', JSON.stringify(currentUser));
             
-            alert("Катталдыңыз!");
+            alert("Ийгиликтүү катталдыңыз!");
             closeAuthModal();
             updateAuthUI();
         }
@@ -452,7 +546,7 @@
             const password = document.getElementById('login-password').value.trim();
 
             if (!phone || !password) {
-                alert("Сураныч, маалыматтарды киргизиңиз!");
+                alert("Сураныч, маалыматтарды толук киргизиңиз!");
                 return;
             }
 
@@ -461,18 +555,21 @@
             if (!user && phone === "+996700112233" && password === "123") {
                 currentUser = { name: "Азамат", phone: "+996700112233", role: "driver" };
                 localStorage.setItem('sapardash_current_user', JSON.stringify(currentUser));
+                alert("Авторизацияландыңыз!");
                 closeAuthModal();
                 updateAuthUI();
                 return;
             }
 
             if (!user) {
-                alert("Телефон же сыр сөз туура эмес!");
+                alert("Телефон номериңиз же сыр сөзүңүз туура эмес!");
                 return;
             }
 
             currentUser = user;
             localStorage.setItem('sapardash_current_user', JSON.stringify(currentUser));
+            
+            alert("Кайрадан кош келиңиз!");
             closeAuthModal();
             updateAuthUI();
         }
@@ -482,26 +579,34 @@
             localStorage.removeItem('sapardash_current_user');
             updateAuthUI();
             switchTab('passenger');
+            alert("Системадан чыктыңыз.");
         }
 
         function getDriverRating(phone) {
             const driverRev = reviews.filter(r => r.driverPhone === phone);
             if (driverRev.length === 0) return { avg: 5.0, count: 0 };
+            
             const sum = driverRev.reduce((acc, r) => acc + r.rating, 0);
-            return { avg: (sum / driverRev.length).toFixed(1), count: driverRev.length };
+            return {
+                avg: (sum / driverRev.length).toFixed(1),
+                count: driverRev.length
+            };
         }
 
         function getStarsHtml(rating) {
             let starsHtml = "";
             const floor = Math.floor(rating);
             for (let i = 1; i <= 5; i++) {
-                if (i <= floor) starsHtml += <i class="fa-solid fa-star text-amber-400"></i>;
-                else starsHtml += <i class="fa-solid fa-star text-slate-200"></i>;
+                if (i <= floor) {
+                    starsHtml += `<i class="fa-solid fa-star text-amber-400"></i>`;
+                } else {
+                    starsHtml += `<i class="fa-solid fa-star text-slate-200"></i>`;
+                }
             }
             return starsHtml;
         }
 
-        // КАРТОЧКАЛАРДЫ ЧЫГАРУУ ЖАНА СҮРӨТТҮ ТЕКШЕРҮҮ БӨЛҮМҮ (404 ӨЧҮРҮЛДҮ)
+        // КАРТОЧКАЛАРДЫ КҮЙГҮЗҮҮ (Бул жерде 404 катасы үчүн onerror кошулду)
         function renderAds(filteredAds = ads) {
             const container = document.getElementById('ads-container');
             const countLabel = document.getElementById('ads-count');
@@ -513,12 +618,13 @@
                 finalAds = filteredAds.filter(ad => ad.type === typeFilter);
             }
 
-            countLabel.textContent = ${finalAds.length} жарыя;
+            countLabel.textContent = `${finalAds.length} жарыя табылды`;
 
             if (finalAds.length === 0) {
                 container.innerHTML = `
-                    <div class="col-span-2 text-center py-12 bg-white rounded-2xl border">
-                        <p class="text-slate-500 font-medium">Каттамдар табылган жок.</p>
+                    <div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-slate-100">
+                        <span class="text-4xl">🤷‍♂️</span>
+                        <p class="text-slate-500 mt-2 font-medium">Каттамдар азырынча жок же табылган жок.</p>
                     </div>
                 `;
                 return;
@@ -528,45 +634,57 @@
                 const badgeColor = ad.type === 'professional' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-green-100 text-green-800 border-green-200';
                 const badgeText = ad.type === 'professional' ? '⭐ Профессионал Такси' : '🚗 Жөнөкөй Попутка';
                 
-                // ТЕКШЕРҮҮ: Эгер сүрөт бош болсо же туура эмес болсо, 404 бербей даяр кооз сүрөттү коёт
-                let finalPhoto = ad.photo;
-                if (!finalPhoto || finalPhoto.trim() === "" || finalPhoto.includes("vercel.app") || finalPhoto.includes("public/")) {
-                    finalPhoto = ad.type === 'professional' ? DEFAULT_CAR_IMAGE : CASUAL_CAR_IMAGE;
-                }
-                
                 const dateOptions = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
                 const formattedDate = new Date(ad.time).toLocaleDateString('ky-KG', dateOptions);
+
                 const ratingInfo = getDriverRating(ad.phone);
 
+                // ОҢДОЛДУ: onerror="this.onerror=null; this.src='${BACKUP_CAR_IMAGE}';" аркылуу 404 катасы жок кылынды
                 container.innerHTML += `
                     <div class="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition duration-300">
                         <div class="relative h-48 bg-slate-100">
-                            <img src="${finalPhoto}" alt="Унаа" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='${DEFAULT_CAR_IMAGE}';">
-                            <span class="absolute top-3 left-3 text-[10px] font-bold uppercase px-3 py-1.5 rounded-lg border shadow-sm ${badgeColor}">
+                            <img src="${ad.photo || BACKUP_CAR_IMAGE}" 
+                                 onerror="this.onerror=null; this.src='${BACKUP_CAR_IMAGE}';" 
+                                 alt="Машинанын сүрөтү" 
+                                 class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg border shadow-sm ${badgeColor}">
                                 ${badgeText}
                             </span>
                         </div>
                         <div class="p-6 space-y-4">
-                            <div>
-                                <h3 class="text-lg font-bold text-slate-900 leading-tight">${ad.from} ➔ ${ad.to}</h3>
-                                <p class="text-xs text-slate-400 mt-1">📅 Убактысы: <span class="font-semibold text-slate-700">${formattedDate}</span></p>
-                            </div>
-                            <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl text-sm">
+                            <div class="flex justify-between items-start gap-2">
                                 <div>
-                                    <p class="font-semibold text-slate-800">${ad.name}</p>
-                                    <button onclick="openReviewModal('${ad.phone}', '${ad.name}')" class="text-xs text-blue-600 hover:underline">Отзывдар (${ratingInfo.count})</button>
+                                    <h3 class="text-lg font-bold text-slate-900 leading-tight">${ad.from} ➔ ${ad.to}</h3>
+                                    <p class="text-xs text-slate-400 mt-1">📅 Чыгуу убактысы: <span class="font-semibold text-slate-700">${formattedDate}</span></p>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-lg font-black text-blue-600 block">${ad.price} сом</span>
+                                    <span class="text-xl font-black text-blue-600 block">${ad.price} сом</span>
+                                    <span class="text-[10px] text-slate-400">бир орунга</span>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between text-xs text-slate-500 px-1">
-                                <div class="flex gap-1">${getStarsHtml(ratingInfo.avg)}</div>
-                                <span>🚘 ${ad.brand} [<b>${ad.number}</b>]</span>
+
+                            <div class="bg-slate-50 p-3 rounded-xl space-y-2 text-sm text-slate-600">
+                                <div class="flex justify-between items-center">
+                                    <p class="font-semibold text-slate-800">👤 Айдоочу: <span class="font-normal text-slate-600">${ad.name}</span></p>
+                                    <button onclick="openReviewModal('${ad.phone}', '${ad.name}')" class="text-xs text-blue-600 hover:underline font-semibold">
+                                        Отзывдар (${ratingInfo.count})
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between border-t border-slate-200/60 pt-2">
+                                    <div class="flex items-center gap-1">
+                                        ${getStarsHtml(ratingInfo.avg)}
+                                        <span class="text-xs font-bold text-slate-700 ml-1">${ratingInfo.avg}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 font-medium">🚘 ${ad.brand} [<span class="text-slate-800 font-bold">${ad.number}</span>]</p>
+                                </div>
                             </div>
-                            <a href="tel:${ad.phone}" class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 text-sm">
-                                <i class="fa-solid fa-phone"></i> Чалуу: ${ad.phone}
-                            </a>
+
+                            <div class="pt-2">
+                                <a href="tel:${ad.phone}" class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 shadow-sm text-sm">
+                                    <i class="fa-solid fa-phone"></i> Чалуу: ${ad.phone}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -576,16 +694,22 @@
         function searchTrips() {
             const fromVal = document.getElementById('search-from').value.toLowerCase().trim();
             const toVal = document.getElementById('search-to').value.toLowerCase().trim();
-            const filtered = ads.filter(ad => ad.from.toLowerCase().includes(fromVal) && ad.to.toLowerCase().includes(toVal));
+
+            const filtered = ads.filter(ad => {
+                const matchFrom = ad.from.toLowerCase().includes(fromVal);
+                const matchTo = ad.to.toLowerCase().includes(toVal);
+                return matchFrom && matchTo;
+            });
+
             renderAds(filtered);
         }
 
-        // ЖАРЫЯНЫ САКТОО ЖАНА СҮРӨТТҮ ТУУРА ДАЯРДОО
+        // ЖАЗЫЛГАН ФОРМАНЫ САКТОО
         function saveForm(event) {
             event.preventDefault();
 
             if (!currentUser) {
-                alert("Катталыңыз!");
+                alert("Жарыя кошуу үчүн адегенде катталуу керек!");
                 openAuthModal('register');
                 return;
             }
@@ -598,12 +722,6 @@
             const tripPrice = document.getElementById('trip-price').value;
             const taxiType = document.querySelector('input[name="taxi-type"]:checked').value;
 
-            // Эгер айдоочу сүрөт тартпаса, анда ката бербеш үчүн автоматтык түрдө базалык сүрөт коюлат
-            let finalSavedPhoto = currentUploadedImageBase64;
-            if (!finalSavedPhoto || finalSavedPhoto.trim() === "") {
-                finalSavedPhoto = taxiType === 'professional' ? DEFAULT_CAR_IMAGE : CASUAL_CAR_IMAGE;
-            }
-
             const newAd = {
                 id: Date.now(),
                 name: currentUser.name,
@@ -615,7 +733,7 @@
                 time: tripTime,
                 price: tripPrice,
                 type: taxiType,
-                photo: finalSavedPhoto
+                photo: currentUploadedImageBase64
             };
 
             ads.unshift(newAd);
@@ -625,51 +743,87 @@
             currentUploadedImageBase64 = "";
             document.getElementById('image-upload-preview').classList.add('hidden');
 
-            alert("Жарыя жайгаштырылды!");
+            alert("Жарыяңыз ийгиликтүү кошулду!");
             switchTab('passenger');
             renderAds();
         }
 
-        // КАМЕРА ЖАНА СҮРӨТТҮ ЖОГОРКУ САПАТТА КЫСУУ
+        // ФАЙЛДАН СҮРӨТТҮ ЖҮКТӨӨ
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
+            if (file.size > 3 * 1024 * 1024) {
+                alert("Жүктөлүүчү сүрөт өтө чоң! Сураныч, 3Мб ашпаган сүрөт тандаңыз.");
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    
-                    const MAX_WIDTH = 800;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    currentUploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
-                    
-                    const previewDiv = document.getElementById('image-upload-preview');
-                    const previewImg = document.getElementById('preview-img-el');
-                    previewImg.src = currentUploadedImageBase64;
-                    previewDiv.classList.remove('hidden');
-                };
-                img.src = e.target.result;
+                currentUploadedImageBase64 = e.target.result;
+                showPreview(e.target.result);
             };
             reader.readAsDataURL(file);
         }
 
+        // СҮРӨТТҮ АЛДЫН АЛА КӨРСӨТҮҮ
+        function showPreview(src) {
+            const previewDiv = document.getElementById('image-upload-preview');
+            const previewImg = document.getElementById('preview-img-el');
+            previewImg.src = src;
+            previewDiv.classList.remove('hidden');
+        }
+
+        // ================= ЖАҢЫ ФУНКЦИЯЛАР: КАМЕРА ЛОГИКАСЫ =================
+        function openCameraModal() {
+            const modal = document.getElementById('camera-modal');
+            const video = document.getElementById('camera-video');
+            modal.classList.remove('hidden');
+
+            // Телефон же компьютердин камерасын иштетүү
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
+                .then(function(stream) {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                })
+                .catch(function(err) {
+                    alert("Камерага кирүүгө уруксат берилген жок же камера табылган жок!");
+                    closeCameraModal();
+                });
+        }
+
+        function closeCameraModal() {
+            document.getElementById('camera-modal').classList.add('hidden');
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop()); // Камераны өчүрүү
+                videoStream = null;
+            }
+        }
+
+        function takeSnapshot() {
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('camera-canvas');
+            const context = canvas.getContext('2d');
+
+            if (video.videoWidth > 0) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Сүрөттү Base64 форматына айландыруу
+                const dataURL = canvas.toDataURL('image/jpeg');
+                currentUploadedImageBase64 = dataURL;
+                
+                showPreview(dataURL);
+                closeCameraModal();
+            }
+        }
+        // ===================================================================
+
         function toggleTypeUI(type) {
             const pLabel = document.getElementById('label-type-prof');
             const cLabel = document.getElementById('label-type-casual');
+
             if (type === 'professional') {
                 pLabel.className = "border p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition border-blue-500 bg-blue-50";
                 cLabel.className = "border p-4 rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50 transition border-slate-200 bg-white";
@@ -681,7 +835,7 @@
 
         function openReviewModal(driverPhone, driverName) {
             activeDriverPhoneForReview = driverPhone;
-            document.getElementById('modal-driver-title').textContent = Айдоочу: ${driverName};
+            document.getElementById('modal-driver-title').textContent = `Айдоочу: ${driverName}`;
             document.getElementById('review-modal').classList.remove('hidden');
             renderReviewsList();
         }
@@ -694,22 +848,25 @@
         function renderReviewsList() {
             const listContainer = document.getElementById('reviews-list');
             listContainer.innerHTML = '';
+
             const activeReviews = reviews.filter(r => r.driverPhone === activeDriverPhoneForReview);
 
             if (activeReviews.length === 0) {
-                listContainer.innerHTML = <p class="text-sm text-slate-500 text-center py-4">Пикирлер жок.</p>;
+                listContainer.innerHTML = `<p class="text-sm text-slate-500 text-center py-4">Бул айдоочуга пикир жазыла элек. Биринчи болуп калтырыңыз!</p>`;
                 return;
             }
 
             activeReviews.forEach(r => {
                 listContainer.innerHTML += `
-                    <div class="bg-slate-50 p-4 rounded-xl border space-y-1">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-1">
                         <div class="flex justify-between items-center">
                             <span class="font-bold text-sm text-slate-800">${r.reviewerName}</span>
                             <span class="text-xs text-slate-400">${r.date}</span>
                         </div>
-                        <div class="flex gap-1 text-xs">${getStarsHtml(r.rating)}</div>
-                        <p class="text-xs text-slate-600">${r.text}</p>
+                        <div class="flex gap-1 text-xs mb-1">
+                            ${getStarsHtml(r.rating)}
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">${r.text}</p>
                     </div>
                 `;
             });
@@ -719,14 +876,17 @@
             document.getElementById('new-rating-value').value = val;
             const stars = document.querySelectorAll('#rating-stars-select i');
             stars.forEach((star, index) => {
-                if (index < val) star.className = "fa-solid fa-star text-amber-400 cursor-pointer transition";
-                else star.className = "fa-solid fa-star text-slate-300 cursor-pointer transition";
+                if (index < val) {
+                    star.className = "fa-solid fa-star text-amber-400 cursor-pointer transition";
+                } else {
+                    star.className = "fa-solid fa-star text-slate-300 cursor-pointer transition";
+                }
             });
         }
 
         function submitReview() {
             if (!currentUser) {
-                alert("Кириңиз!");
+                alert("Отзыв калтыруу үчүн алгач катталыңыз же системага кириңиз!");
                 openAuthModal('register');
                 return;
             }
@@ -734,7 +894,11 @@
             const text = document.getElementById('new-review-text').value.trim();
             const rating = parseInt(document.getElementById('new-rating-value').value);
 
-            if (!text) return;
+            if (!text) {
+                alert("Сураныч, пикириңизди жазыңыз!");
+                return;
+            }
+
             const today = new Date().toISOString().split('T')[0];
 
             const newRev = {
@@ -747,8 +911,11 @@
 
             reviews.push(newRev);
             localStorage.setItem('sapardash_reviews', JSON.stringify(reviews));
+
             document.getElementById('new-review-text').value = "";
             setRatingValue(5);
+
+            alert("Пикириңиз ийгиликтүү кабыл алынды!");
             renderReviewsList();
             renderAds();
         }
